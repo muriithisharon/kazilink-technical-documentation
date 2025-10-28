@@ -86,7 +86,7 @@ export default function Home() {
 
         <div className="relative rounded-xl overflow-hidden shadow-md border border-gray-200">
           <Image
-            src="/images/KaziLink SAD.png"
+            src="/Images/KaziLink SAD.png"
             alt="KaziLink System Architecture Diagram"
             width={1200}
             height={800}
@@ -214,7 +214,7 @@ USSD_SHORTCODE=*384*88462#`}
         <p className="text-gray-700 mb-4">Entity-Relationship: Users → Jobs → Acceptances → Notifications.</p>
         <div className="bg-gray-200 border-2 border-dashed rounded-xl w-full h-64 md:h-80 flex items-center justify-center">
           <Image
-            src="/images/kazilink - erd.png"
+            src="/Images/kazilink - erd.png"
             alt="KaziLink ERD"
             width={1200}
             height={800}
