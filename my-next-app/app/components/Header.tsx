@@ -12,7 +12,7 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
         <div className="flex items-center space-x-2">
           <Image
-            src="/images/logo.png"
+            src="/Images/logo.png"
             alt="KaziLink logo"
             width={80}
             height={80}
