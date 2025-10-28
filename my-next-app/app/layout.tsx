@@ -1,10 +1,11 @@
-// app/layout.tsx
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import Header from './components/Header';
-import Sidebar from './components/Sidebar';
-import Footer from './components/Footer';   // ← NEW
+import SidebarWrapper from './components/SidebarWrapper';
+
+
+import Footer from './components/Footer'; 
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -19,7 +20,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={inter.className}>
         <Header />
         <div className="flex">
-          <Sidebar />
+     <SidebarWrapper />
           <main className="flex-1 bg-gray-50 min-h-[calc(100vh-4rem)]">
             {children}
           </main>
