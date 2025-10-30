@@ -4,7 +4,11 @@ import Image from 'next/image';
 import { Menu, Search, X, Command } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 
-export default function Header({ onSearch }: { onSearch: (query: string) => void }) {
+interface HeaderProps {
+  onSearch?: (query: string) => void;
+}
+
+export default function Header({ onSearch = () => {} }: HeaderProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [query, setQuery] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
