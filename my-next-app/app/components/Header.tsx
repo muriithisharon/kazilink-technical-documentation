@@ -3,10 +3,9 @@
 import Image from 'next/image';
 import { Menu, Search, X, Command } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
-import { div } from 'framer-motion/client';
 
 interface HeaderProps {
-  onSearch?: (query: string) => void;
+  onSearch?: (query: string) => void;   
 }
 
 export default function Header({ onSearch = () => {} }: HeaderProps) {
@@ -40,7 +39,13 @@ export default function Header({ onSearch = () => {} }: HeaderProps) {
     <header className="bg-white sticky top-0 z-50 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
         <div className="flex items-center space-x-2">
-          <Image src="/Images/logo.png" alt="KaziLink logo" width={80} height={80} className="rounded" />
+          <Image
+            src="/Images/logo.png"
+            alt="KaziLink logo"
+            width={80}
+            height={80}
+            className="rounded"
+          />
           <div>
             <p className="font-semibold text-gray-900">KaziLink</p>
             <p className="text-xs text-gray-500">Technical Documentation</p>
@@ -71,9 +76,6 @@ export default function Header({ onSearch = () => {} }: HeaderProps) {
             </kbd>
           </div>
         </div>
-
-
-        
 
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
