@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { Menu, Search, X, Command } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
+import { div } from 'framer-motion/client';
 
 interface HeaderProps {
   onSearch?: (query: string) => void;
@@ -70,6 +71,9 @@ export default function Header({ onSearch = () => {} }: HeaderProps) {
             </kbd>
           </div>
         </div>
+
+
+        
 
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
