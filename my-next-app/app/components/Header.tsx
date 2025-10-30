@@ -3,23 +3,16 @@
 import Image from 'next/image';
 import { Menu, Search, X, Command } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
+import { useSearch } from './SearchContext';
 
-interface HeaderProps {
-  onSearch?: (query: string) => void;
-}
-
-export default function Header({ onSearch = () => {} }: HeaderProps) {
+export default function Header() {
+  const { searchQuery, setSearchQuery } = useSearch();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [query, setQuery] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    onSearch(query);
-  }, [query, onSearch]);
-
-  useEffect(() => {
     inputRef.current?.focus();
-  }, [query]);
+  }, [searchQuery]);
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -28,12 +21,12 @@ export default function Header({ onSearch = () => {} }: HeaderProps) {
         inputRef.current?.focus();
       }
       if (e.key === 'Escape') {
-        setQuery('');
+        setSearchQuery('');
       }
     };
     document.addEventListener('keydown', handler);
     return () => document.removeEventListener('keydown', handler);
-  }, []);
+  }, [setSearchQuery]);
 
   return (
     <header className="bg-white sticky top-0 z-50 shadow-sm">
@@ -53,13 +46,13 @@ export default function Header({ onSearch = () => {} }: HeaderProps) {
               ref={inputRef}
               type="text"
               placeholder="Search docs... (Cmd+K)"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-10 pr-10 py-2 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"
             />
-            {query && (
+            {searchQuery && (
               <button
-                onClick={() => setQuery('')}
+                onClick={() => setSearchQuery('')}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
               >
                 <X className="h-4 w-4" />
@@ -86,8 +79,8 @@ export default function Header({ onSearch = () => {} }: HeaderProps) {
             <input
               type="text"
               placeholder="Search docs..."
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-10 pr-4 py-2 text-sm bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500"
             />
           </div>

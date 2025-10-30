@@ -1,12 +1,13 @@
 'use client';
 
-import { Suspense } from 'react';
-import Sidebar from './Sidebar';
+import { useSearch } from './SearchContext';
 
-export default function SidebarWrapper({ searchQuery }: { searchQuery: string }) {
+export default function SidebarWrapper() {
+  const { searchQuery } = useSearch();
+
   return (
-    <Suspense fallback={<div className="w-64 p-4 text-sm text-gray-500">Loading...</div>}>
-      <Sidebar searchQuery={searchQuery} />
-    </Suspense>
+    <aside>
+      <p>Searching for: {searchQuery || 'nothing'}</p>
+    </aside>
   );
 }
