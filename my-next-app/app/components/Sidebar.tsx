@@ -1,6 +1,5 @@
 'use client';
 
-import { usePathname, useSearchParams } from 'next/navigation';
 import {
   BookOpen,
   Zap,
@@ -43,11 +42,9 @@ const menu: MenuItem[] = [
   { label: 'Support & Maintenance', href: '#support', icon: <HelpCircle className="h-5 w-5" /> },
 ];
 
-export default function Sidebar() {
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-
+export default function Sidebar({ searchQuery = '' }: { searchQuery?: string }) {
   const [hash, setHash] = useState<string>(typeof window !== 'undefined' ? window.location.hash : '');
+  const [open, setOpen] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     const onHashChange = () => setHash(window.location.hash);
@@ -55,7 +52,34 @@ export default function Sidebar() {
     return () => window.removeEventListener('hashchange', onHashChange);
   }, []);
 
-  const [open, setOpen] = useState<Record<string, boolean>>({});
+  useEffect(() => {
+    if (!searchQuery) return;
+    const newOpen: Record<string, boolean> = {};
+    menu.forEach(item => {
+      if (item.sub?.some(s => s.label.toLowerCase().includes(searchQuery.toLowerCase()))) {
+        newOpen[item.label] = true;
+      }
+    });
+    setOpen(prev => ({ ...prev, ...newOpen }));
+  }, [searchQuery]);
+
+  const filteredMenu = menu
+    .map(item => {
+      const matchesLabel = item.label.toLowerCase().includes(searchQuery.toLowerCase());
+      const subMatches = item.sub?.filter(s =>
+        s.label.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      const hasMatchingSub = subMatches && subMatches.length > 0;
+
+      if (matchesLabel || hasMatchingSub) {
+        return {
+          ...item,
+          sub: hasMatchingSub ? subMatches : item.sub,
+        };
+      }
+      return null;
+    })
+    .filter(Boolean) as MenuItem[];
 
   const toggle = (label: string) => {
     setOpen(prev => ({ ...prev, [label]: !prev[label] }));
@@ -68,7 +92,7 @@ export default function Sidebar() {
     if (el) {
       el.scrollIntoView({ behavior: 'smooth', block: 'start' });
       window.history.pushState(null, '', href);
-      setHash(href);                     
+      setHash(href);
     }
     const parent = menu.find(m => m.sub?.some(s => s.href === href));
     if (parent) setOpen(prev => ({ ...prev, [parent.label]: true }));
@@ -94,9 +118,10 @@ export default function Sidebar() {
             if (hasSub) toggle(item.label);
           }}
           className={`
-            flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-md transition-colors cursor-pointer
+            flex items-center gap-2 px-4 py-2 rounded-md transition-colors cursor-pointer
             ${depth === 0 ? 'ml-0' : 'ml-6'}
             ${active ? 'bg-amber-100 text-amber-800' : 'text-gray-700 hover:bg-gray-100'}
+            ${depth === 0 ? 'text-base font-medium' : 'text-sm'}
           `}
         >
           {item.icon}
@@ -115,7 +140,13 @@ export default function Sidebar() {
 
   return (
     <aside className="hidden lg:block w-64 bg-white border-r sticky top-0 h-screen overflow-y-auto">
-      <nav className="p-4 space-y-1">{menu.map(i => renderItem(i))}</nav>
+      <nav className="p-4 space-y-1">
+        {filteredMenu.length === 0 ? (
+          <p className="px-4 py-2 text-sm text-gray-500 italic">No results found.</p>
+        ) : (
+          filteredMenu.map(i => renderItem(i))
+        )}
+      </nav>
     </aside>
   );
 }
