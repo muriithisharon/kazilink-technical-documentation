@@ -4,7 +4,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import Header from './components/Header';
-import SidebarWrapper from './components/SidebarWrapper';
+import Sidebar from './components/Sidebar'; // <-- use your real sidebar!!!
 import Footer from './components/Footer';
 import { SearchProvider } from './components/SearchContext';
 
@@ -17,7 +17,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <SearchProvider>
           <Header />
           <div className="flex">
-            <SidebarWrapper />
+            <Sidebar />      {/* <-- This displays the real sidebar with navigation! */}
             <main className="flex-1 bg-gray-50 min-h-[calc(100vh-4rem)] p-6 lg:p-8">
               {children}
             </main>

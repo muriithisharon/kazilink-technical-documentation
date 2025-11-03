@@ -10,19 +10,13 @@ export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    inputRef.current?.focus();
-  }, [searchQuery]);
-
+  useEffect(() => { inputRef.current?.focus(); }, [searchQuery]);
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-        e.preventDefault();
-        inputRef.current?.focus();
+        e.preventDefault(); inputRef.current?.focus();
       }
-      if (e.key === 'Escape') {
-        setSearchQuery('');
-      }
+      if (e.key === 'Escape') { setSearchQuery(''); }
     };
     document.addEventListener('keydown', handler);
     return () => document.removeEventListener('keydown', handler);
@@ -38,7 +32,6 @@ export default function Header() {
             <p className="text-xs text-gray-500">Technical Documentation</p>
           </div>
         </div>
-
         <div className="hidden md:flex items-center flex-1 max-w-md mx-8">
           <div className="relative w-full">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
@@ -63,7 +56,6 @@ export default function Header() {
             </kbd>
           </div>
         </div>
-
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
           className="md:hidden p-2 rounded-md text-gray-600 hover:bg-gray-100"
@@ -71,7 +63,6 @@ export default function Header() {
           {mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
         </button>
       </div>
-
       {mobileOpen && (
         <nav className="md:hidden bg-white p-4 border-t">
           <div className="relative">

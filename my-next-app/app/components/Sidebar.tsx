@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import {
   BookOpen,
@@ -12,8 +12,9 @@ import {
   ChevronDown,
   Smartphone,
   Layers,
-} from 'lucide-react';
-import { useEffect, useState } from 'react';
+} from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { useSearch } from "./SearchContext";
 
 interface MenuItem {
   label: string;
@@ -23,84 +24,90 @@ interface MenuItem {
 }
 
 const menu: MenuItem[] = [
-  { label: 'Introduction', href: '#introduction', icon: <BookOpen className="h-5 w-5" /> },
-  { label: 'Who are our users?', href: '#users', icon: <Zap className="h-5 w-5" /> },
+  { label: "Introduction", href: "#introduction", icon: <BookOpen className="h-5 w-5" /> },
+  { label: "Who are our users?", href: "#users", icon: <Zap className="h-5 w-5" /> },
   {
-    label: 'System Overview',
-    href: '#system-overview',
+    label: "System Overview",
+    href: "#system-overview",
     icon: <Layout className="h-5 w-5" />,
     sub: [
-      { label: 'USSD Flow', href: '#ussd-flow', icon: <Smartphone className="h-4 w-4" /> },
-      { label: 'Architecture', href: '#architecture', icon: <Layers className="h-4 w-4" /> },
+      { label: "USSD Flow", href: "#ussd-flow", icon: <Smartphone className="h-4 w-4" /> },
+      { label: "Architecture", href: "#architecture", icon: <Layers className="h-4 w-4" /> },
     ],
   },
-  { label: 'Installation Guide', href: '#installation', icon: <Database className="h-5 w-5" /> },
-  { label: 'Configuration Guide', href: '#configuration', icon: <Settings className="h-5 w-5" /> },
-  { label: 'API Documentation', href: '#api', icon: <Settings className="h-5 w-5" /> },
-  { label: 'Database Schema', href: '#database', icon: <Database className="h-5 w-5" /> },
-  { label: 'Testing', href: '#testing', icon: <Beaker className="h-5 w-5" /> },
-  { label: 'Support & Maintenance', href: '#support', icon: <HelpCircle className="h-5 w-5" /> },
+  { label: "Installation Guide", href: "#installation", icon: <Database className="h-5 w-5" /> },
+  { label: "Database Schema", href: "#database", icon: <Database className="h-5 w-5" /> },
+  { label: "Testing", href: "#testing", icon: <Beaker className="h-5 w-5" /> },
+  { label: "Support Maintenance", href: "#support", icon: <HelpCircle className="h-5 w-5" /> },
 ];
 
-export default function Sidebar({ searchQuery = '' }: { searchQuery?: string }) {
-  const [hash, setHash] = useState<string>(typeof window !== 'undefined' ? window.location.hash : '');
+export default function Sidebar() {
+  const { searchQuery } = useSearch();
+  const [hash, setHash] = useState(
+    typeof window !== "undefined" ? window.location.hash : ""
+  );
   const [open, setOpen] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     const onHashChange = () => setHash(window.location.hash);
-    window.addEventListener('hashchange', onHashChange);
-    return () => window.removeEventListener('hashchange', onHashChange);
+    window.addEventListener("hashchange", onHashChange);
+    return () => window.removeEventListener("hashchange", onHashChange);
   }, []);
 
   useEffect(() => {
     if (!searchQuery) return;
     const newOpen: Record<string, boolean> = {};
-    menu.forEach(item => {
-      if (item.sub?.some(s => s.label.toLowerCase().includes(searchQuery.toLowerCase()))) {
+    menu.forEach((item) => {
+      if (
+        item.sub?.some((subItem) =>
+          subItem.label.toLowerCase().includes(searchQuery.toLowerCase())
+        )
+      ) {
         newOpen[item.label] = true;
       }
     });
-    setOpen(prev => ({ ...prev, ...newOpen }));
+    setOpen((prev) => ({ ...prev, ...newOpen }));
   }, [searchQuery]);
 
   const filteredMenu = menu
-    .map(item => {
-      const matchesLabel = item.label.toLowerCase().includes(searchQuery.toLowerCase());
-      const subMatches = item.sub?.filter(s =>
-        s.label.toLowerCase().includes(searchQuery.toLowerCase())
+    .map((item) => {
+      const matchesLabel = item.label.toLowerCase().includes(searchQuery?.toLowerCase() ?? "");
+      const subMatches = item.sub?.filter((subItem) =>
+        subItem.label.toLowerCase().includes(searchQuery?.toLowerCase() ?? "")
       );
-      const hasMatchingSub = subMatches && subMatches.length > 0;
-
-      if (matchesLabel || hasMatchingSub) {
-        return {
-          ...item,
-          sub: hasMatchingSub ? subMatches : item.sub,
-        };
-      }
+      if (matchesLabel) return item;
+      if (subMatches && subMatches.length > 0) return { ...item, sub: subMatches };
       return null;
     })
     .filter(Boolean) as MenuItem[];
 
   const toggle = (label: string) => {
-    setOpen(prev => ({ ...prev, [label]: !prev[label] }));
+    setOpen((prev) => ({ ...prev, [label]: !prev[label] }));
   };
 
-  const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+  const scrollToSection = (
+    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
+    href: string
+  ) => {
     e.preventDefault();
     const id = href.slice(1);
     const el = document.getElementById(id);
     if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      window.history.pushState(null, '', href);
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+      window.history.pushState(null, "", href);
       setHash(href);
     }
-    const parent = menu.find(m => m.sub?.some(s => s.href === href));
-    if (parent) setOpen(prev => ({ ...prev, [parent.label]: true }));
+    const parent = menu.find((m) => m.sub?.some((s) => s.href === href));
+    if (parent) {
+      setOpen((prev) => ({ ...prev, [parent.label]: true }));
+    }
   };
 
   const isActive = (item: MenuItem): boolean => {
     if (hash === item.href) return true;
-    if (item.sub) return item.sub.some(s => hash === s.href);
+    if (item.sub) {
+      return item.sub.some((sub) => sub.href === hash);
+    }
     return false;
   };
 
@@ -108,30 +115,22 @@ export default function Sidebar({ searchQuery = '' }: { searchQuery?: string }) 
     const active = isActive(item);
     const hasSub = !!item.sub?.length;
     const isOpen = open[item.label];
-
     return (
       <div key={item.href}>
         <a
           href={item.href}
-          onClick={e => {
-            scrollToSection(e, item.href);
-            if (hasSub) toggle(item.label);
-          }}
-          className={`
-            flex items-center gap-2 px-4 py-2 rounded-md transition-colors cursor-pointer
-            ${depth === 0 ? 'ml-0' : 'ml-6'}
-            ${active ? 'bg-amber-100 text-amber-800' : 'text-gray-700 hover:bg-gray-100'}
-            ${depth === 0 ? 'text-base font-medium' : 'text-sm'}
-          `}
+          onClick={(e) => scrollToSection(e, item.href)}
+          className={`flex items-center gap-2 px-4 py-2 rounded-md cursor-pointer ${
+            depth === 0 ? "font-medium text-base" : "text-sm ml-6"
+          } ${active ? "bg-amber-100 text-amber-800" : "text-gray-700 hover:bg-gray-100"}`}
         >
           {item.icon}
           <span>{item.label}</span>
           {hasSub && (isOpen ? <ChevronDown className="ml-auto h-4 w-4" /> : <ChevronRight className="ml-auto h-4 w-4" />)}
         </a>
-
         {hasSub && isOpen && (
           <div className="mt-1">
-            {item.sub!.map(sub => renderItem(sub, depth + 1))}
+            {item.sub!.map((subItem) => renderItem(subItem, depth + 1))}
           </div>
         )}
       </div>
@@ -142,9 +141,9 @@ export default function Sidebar({ searchQuery = '' }: { searchQuery?: string }) 
     <aside className="hidden lg:block w-64 bg-white border-r sticky top-0 h-screen overflow-y-auto">
       <nav className="p-4 space-y-1">
         {filteredMenu.length === 0 ? (
-          <p className="px-4 py-2 text-sm text-gray-500 italic">No results found.</p>
+          <p className="px-4 py-2 text-sm italic text-gray-500">No results found.</p>
         ) : (
-          filteredMenu.map(i => renderItem(i))
+          filteredMenu.map((item) => renderItem(item))
         )}
       </nav>
     </aside>
