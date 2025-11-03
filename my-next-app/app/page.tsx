@@ -32,9 +32,6 @@ import {
 export default function Page() {
  return (
    <>
-
-
-   
      <section className="relative min-h-[90vh] flex flex-col items-center justify-center overflow-hidden mt-[-5rem]">
        <Image
          src="/Images/background.png"
@@ -179,7 +176,7 @@ export default function Page() {
                  <div>
                    <h3 className="text-2xl font-bold text-gray-900 mb-3">Job Browsing</h3>
                    <p className="text-lg text-gray-600">
-                     Workers dial the shortcode to view jobs, filter by type, and see wages.
+                     Workers dial the shortcode to view jobs, and see wages per job.
                    </p>
                  </div>
                </div>
@@ -192,7 +189,7 @@ export default function Page() {
                  <div>
                    <h3 className="text-2xl font-bold text-gray-900 mb-3">Job Confirmation</h3>
                    <p className="text-lg text-gray-600">
-                     Workers get full job details, contacts, and directions via SMS.
+                     Workers get full job details, contacts, and schedule via SMS.
                    </p>
                  </div>
                </div>
@@ -208,7 +205,7 @@ export default function Page() {
            </h2>
            <p className="text-lg md:text-xl text-gray-700 leading-relaxed">
              The <strong>KaziLink informational website</strong> is the digital hub for farmers, workers,
-             and partners. It showcases USSD flows, SMS alerts, location-based matching, and success stories in a clean, mobile-friendly design.
+             and partners. It showcases USSD flows, SMS alerts, location-based matching, in a clean, mobile-friendly design.
            </p>
            <a
              href="https://kazilink-eight.vercel.app/"
@@ -274,12 +271,9 @@ export default function Page() {
        <ol className="list-decimal list-inside space-y-3 text-lg text-gray-700 ml-6">
          <li>Role selection (Farmer / Worker)</li>
          <li>Registration with phone number</li>
-         <li>Main menu: Post Job, Browse Jobs, Profile, Alerts</li>
+         <li>Main menu: Post Job, Browse Jobs and Profile Management</li>
          <li>Job acceptance with SMS confirmation</li>
        </ol>
-       <div className="mt-8 p-6 bg-gray-50 rounded-xl">
-         <p className="text-base md:text-lg font-mono text-gray-800">*384*88462# → 1. Farmer → Enter Name → Job Posted!</p>
-       </div>
        <div className="space-y-6">
          <h3 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
            <Smartphone className="w-7 h-7 text-indigo-700" />
@@ -308,15 +302,9 @@ export default function Page() {
         USSD Implementation
       </h2>
 
-
-
-
       <p className="text-lg md:text-xl text-gray-700 leading-relaxed max-w-4xl mx-auto text-center">
         The KaziLink USSD system provides an <strong>interactive, menu-driven interface</strong> accessible via mobile phones using the shortcode <code>*384*88462#</code>. It enables farmers and workers to engage with the platform <strong>without internet connectivity</strong>, supporting user registration, job posting, SMS alerts, job browsing, and confirmation workflows.
       </p>
-
-
-
 
       <div className="space-y-8">
         <h3 className="text-2xl font-bold text-gray-900">Key Features</h3>
@@ -340,7 +328,7 @@ export default function Page() {
           <li className="flex items-start gap-3">
             <span className="text-green-600 font-bold">•</span>
             <div>
-              <strong>Session Management:</strong> Maintains state using the <code>USSDSession</code> model, storing menu level, selected crop, and navigation history. Supports "0" for back navigation and "00" for main menu.
+              <strong>Session Management:</strong> Maintains state using the <code>USSDSession</code> model, storing menu level, selection, and navigation history. Supports "0" for back navigation and "00" for main menu.
             </div>
           </li>
           <li className="flex items-start gap-3">
@@ -348,7 +336,7 @@ export default function Page() {
             <div>
               <strong>External Integrations:</strong>
               <ul className="ml-6 mt-2 space-y-1">
-                <li><strong>SMS Notifications:</strong> Sends confirmation messages for registration,job posting ,job alerts and job confirmation<code>SMSLogs</code>.</li>
+                <li><strong>SMS Notifications:</strong> Sends confirmation messages for registration, job posting, job alerts and job confirmation<code> SMSLogs</code>.</li>
               </ul>
             </div>
           </li>
@@ -360,9 +348,6 @@ export default function Page() {
           </li>
         </ul>
       </div>
-
-
-
 
       <div className="space-y-8">
         <h3 className="text-2xl font-bold text-gray-900">Architecture</h3>
@@ -397,9 +382,6 @@ export default function Page() {
           </li>
         </ul>
       </div>
-
-
-
 
       <div className="space-y-8">
         <h3 className="text-2xl font-bold text-gray-900">Technical Details</h3>
@@ -436,8 +418,6 @@ export default function Page() {
       </div>
 
 
-
-
       <div className="space-y-8">
         <h3 className="text-2xl font-bold text-gray-900">Implementation Notes</h3>
         <ul className="space-y-4 text-lg text-gray-700">
@@ -451,8 +431,7 @@ export default function Page() {
           </li>
           <li className="flex items-start gap-3">
             <span className="text-green-600 font-bold">•</span>
-            <strong>Limitations:</strong> Hardcoded location (Bungoma,Trans Nzoia,Nyandarua). Future enhancements could query Lcation dynamically. Session timeouts not implemented.
-          </li>
+            <strong>Limitations:</strong> Hardcoded location (Bungoma, Trans Nzoia, Nyandarua). Future enhancements could query location dynamically.          </li>
         </ul>
       </div>
 
