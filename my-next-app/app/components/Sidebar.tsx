@@ -43,16 +43,17 @@ const menu: MenuItem[] = [
 
 export default function Sidebar() {
   const { searchQuery } = useSearch();
-  const [hash, setHash] = useState(
-    typeof window !== "undefined" ? window.location.hash : ""
-  );
-  const [open, setOpen] = useState<Record<string, boolean>>({});
+  const [hash, setHash] = useState("");
 
+  // Set initial hash and listen for changes ONLY on client after mount
   useEffect(() => {
+    setHash(window.location.hash);
     const onHashChange = () => setHash(window.location.hash);
     window.addEventListener("hashchange", onHashChange);
     return () => window.removeEventListener("hashchange", onHashChange);
   }, []);
+
+  const [open, setOpen] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     if (!searchQuery) return;
