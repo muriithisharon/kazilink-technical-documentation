@@ -204,7 +204,7 @@ export default function Home() {
         <div className="relative rounded-2xl overflow-hidden shadow-lg border border-gray-200">
           <Zoom>
             <Image
-              src="/images/background.png"
+              src="/Images/background.png"
               alt="KaziLink Informational Website"
               width={1400}
               height={900}
